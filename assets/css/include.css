@@ -1,0 +1,117 @@
+/* =========================================
+   Rudra International - Breadcrumb CSS
+========================================= */
+
+:root {
+    /* Is green code ko apne home page ke button wale green se replace kar lena */
+    --theme-primary: #75a743;
+    --theme-dark: #2c2c2c;
+    /* Soft earthy beige color background ke liye, jo potato theme pe suit karega */
+    --theme-bg-soft: #f8f6f0;
+    --transition-smooth: all 0.3s ease-in-out;
+}
+
+.rudra-breadcrumb {
+    background-color: var(--theme-bg-soft);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+    /* Agar tum chaho to background mein ek transparent leaf/potato ka pattern bhi laga sakte ho */
+    /* background-image: url('assets/img/pattern.png'); */
+}
+
+.rudra-breadcrumb .page-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--theme-dark);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+}
+
+.rudra-breadcrumb .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.rudra-breadcrumb .breadcrumb-item {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Links Styling with hover effect */
+.rudra-breadcrumb .breadcrumb-item a {
+    color: var(--theme-dark);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+
+/* Hover underline animation */
+.rudra-breadcrumb .breadcrumb-item a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--theme-primary);
+    transition: var(--transition-smooth);
+}
+
+.rudra-breadcrumb .breadcrumb-item a:hover {
+    color: var(--theme-primary);
+}
+
+.rudra-breadcrumb .breadcrumb-item a:hover::after {
+    width: 100%;
+}
+
+.rudra-breadcrumb .breadcrumb-item.active {
+    color: var(--theme-primary);
+}
+
+/* Breadcrumb Separator customization */
+.rudra-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+    content: "\203A";
+    /* Single right-pointing angle quotation mark */
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #999;
+    vertical-align: middle;
+}
+
+/* =========================================
+   Smooth Entry Animations
+========================================= */
+
+.animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpAnim 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeUpAnim {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   Responsive Design
+========================================= */
+@media (max-width: 768px) {
+    .rudra-breadcrumb {
+        padding: 50px 0;
+    }
+
+    .rudra-breadcrumb .page-title {
+        font-size: 2.2rem;
+    }
+}

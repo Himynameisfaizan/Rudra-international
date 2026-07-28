@@ -1,0 +1,175 @@
+/* =========================================
+   About Us Page Styles - Rudra International
+========================================= */
+
+/* Typography & Colors (Ensure these are in your :root if not already) */
+:root {
+    --theme-primary: #75a743; /* Green from the logo/buttons */
+    --theme-dark: #2c2c2c; /* Text color */
+    --theme-soft: #f9f8f4; /* Light earthy tone for background */
+    --transition: all 0.3s ease-in-out;
+}
+
+.bg-theme-soft {
+    background-color: var(--theme-soft);
+}
+
+.theme-subtitle {
+    color: var(--theme-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.theme-title {
+    color: var(--theme-dark);
+    font-weight: 800;
+}
+
+/* Button Styling */
+.btn-theme-primary {
+    background-color: var(--theme-primary);
+    color: #fff;
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-theme-primary:hover {
+    background-color: #5c8534; /* Darker green for hover */
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(117, 167, 67, 0.3);
+}
+
+/* =========================================
+   Section 1: Story & Image Effects
+========================================= */
+.about-img-wrapper {
+    position: relative;
+    padding: 10px;
+}
+
+.about-img-wrapper img {
+    width: 100%;
+    transition: var(--transition);
+}
+
+.about-img-wrapper:hover img {
+    transform: scale(1.02);
+}
+
+/* Experience Badge over Image */
+.experience-badge {
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    background: var(--theme-primary);
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.experience-badge .years {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.experience-badge .text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* =========================================
+   Section 2: Mission & Vision Cards
+========================================= */
+.mission-card {
+    transition: var(--transition);
+    border-bottom: 4px solid transparent;
+}
+
+.mission-card:hover {
+    transform: translateY(-10px);
+    border-bottom: 4px solid var(--theme-primary);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08) !important;
+}
+
+.mission-card .icon-box {
+    width: 60px;
+    height: 60px;
+    background: rgba(117, 167, 67, 0.1);
+    color: var(--theme-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.mission-card:hover .icon-box {
+    background: var(--theme-primary);
+    color: #fff;
+    transform: rotateY(180deg);
+}
+
+/* =========================================
+   Section 3: Features
+========================================= */
+.feature-box {
+    background: #fff;
+    border: 1px solid #eee;
+    transition: var(--transition);
+    height: 100%;
+}
+
+.feature-box:hover {
+    background: var(--theme-primary);
+    border-color: var(--theme-primary);
+    color: #fff;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(117, 167, 67, 0.2);
+}
+
+.feature-box:hover h5, 
+.feature-box:hover p {
+    color: #fff !important;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    transition: var(--transition);
+}
+
+.feature-box:hover .feature-icon {
+    transform: scale(1.2);
+}
+
+/* =========================================
+   Section 4: Process Banner
+========================================= */
+.process-banner {
+    /* Background setup - Add an organic/farm image here */
+    background: linear-gradient(rgba(44, 44, 44, 0.85), rgba(44, 44, 44, 0.85));
+    position: relative;
+    overflow: hidden;
+}
+
+/* Delay classes for staggered animations (extending your previous CSS) */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }

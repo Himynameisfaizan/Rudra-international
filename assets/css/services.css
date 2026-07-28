@@ -1,0 +1,111 @@
+/* =========================================
+   Services Page Styles
+========================================= */
+
+/* Service Cards */
+.service-card {
+    transition: var(--transition);
+    border: 1px solid transparent;
+    position: relative;
+    top: 0;
+}
+
+.service-card:hover {
+    border-color: #eee;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
+    top: -10px; /* Slight lift effect */
+}
+
+/* Image Wrapper & Hover Zoom */
+.service-card .img-wrapper {
+    position: relative;
+    height: 220px;
+}
+
+.service-card .img-wrapper img {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .img-wrapper img {
+    transform: scale(1.1); /* Smooth image zoom on hover */
+}
+
+/* Floating Icon on Image */
+.service-icon {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background-color: var(--theme-primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 4px solid #fff;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.service-card:hover .service-icon {
+    background-color: var(--theme-dark);
+}
+
+/* Card Body spacing for the floating icon */
+.service-card .card-body {
+    padding-top: 40px !important; 
+}
+
+/* Outline Button */
+.btn-outline-theme {
+    color: var(--theme-dark);
+    border: 2px solid #eee;
+    background: transparent;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-outline-theme:hover {
+    background: var(--theme-primary);
+    color: #fff;
+    border-color: var(--theme-primary);
+}
+
+/* =========================================
+   Custom Modal (Popup) Animation
+========================================= */
+
+/* Override Bootstrap's default slide down, make it a smooth scale-in */
+.custom-modal.fade .modal-dialog {
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-modal.show .modal-dialog {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Modal Close Button */
+.custom-modal .btn-close {
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    padding: 10px;
+    margin: 15px 15px 0 auto;
+    transition: var(--transition);
+}
+
+.custom-modal .btn-close:hover {
+    background-color: #e3e3e3;
+    transform: rotate(90deg);
+}
+
+.text-theme-primary {
+    color: var(--theme-primary);
+}

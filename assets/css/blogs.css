@@ -1,0 +1,278 @@
+/* =========================================
+   Blog Page Specific Styles
+========================================= */
+
+/* Blog List Card (Horizontal Layout) */
+.blog-list-card {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.blog-list-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06) !important;
+    border-color: #eee;
+}
+
+/* Image Setup */
+.blog-img-wrap {
+    min-height: 250px;
+}
+
+.blog-img-wrap img {
+    transition: transform 0.6s ease;
+}
+
+.blog-list-card:hover .blog-img-wrap img {
+    transform: scale(1.05);
+    /* Gentle pan effect */
+}
+
+/* Floating Date Badge - Unique for Blog */
+.blog-date-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: var(--theme-primary);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(117, 167, 67, 0.4);
+    z-index: 2;
+    line-height: 1;
+}
+
+.blog-date-badge .day {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.blog-date-badge .month {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Blog Typography & Links */
+.blog-title a {
+    transition: color 0.3s ease;
+}
+
+.blog-title a:hover {
+    color: var(--theme-primary) !important;
+}
+
+.read-more-link {
+    color: var(--theme-primary);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.read-more-link i {
+    transition: transform 0.3s ease;
+}
+
+.read-more-link:hover {
+    color: var(--theme-dark);
+}
+
+.read-more-link:hover i {
+    transform: translateX(5px);
+    /* Arrow slides right on hover */
+}
+
+/* =========================================
+   Sidebar Styling
+========================================= */
+.widget-title {
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.widget-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--theme-primary);
+    border-radius: 2px;
+}
+
+.category-list li {
+    border-bottom: 1px dashed #ddd;
+}
+
+.category-list li:last-child {
+    border-bottom: none;
+}
+
+.category-list li a {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    color: var(--theme-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.category-list li a:hover {
+    color: var(--theme-primary);
+    padding-left: 5px;
+    /* Slight indent on hover */
+}
+
+/* Pagination */
+.custom-pagination .page-link {
+    color: var(--theme-dark);
+    border: none;
+    margin: 0 5px;
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.custom-pagination .page-item.active .page-link,
+.custom-pagination .page-link:hover {
+    background-color: var(--theme-primary);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(117, 167, 67, 0.3);
+}
+
+/* Responsive Fix for Mobile */
+@media (max-width: 768px) {
+    .blog-img-wrap {
+        border-radius: 1rem 1rem 0 0 !important;
+        /* Fix rounded corners on mobile stack */
+    }
+}
+
+/* =========================================
+   Blog Details Specific Styles
+========================================= */
+
+/* Typography inside Rich Text Area */
+.blog-rich-text p {
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+/* Custom Premium Blockquote */
+.custom-blockquote {
+    position: relative;
+    background-color: var(--theme-soft);
+    /* Earthy soft background */
+    border-left: 5px solid var(--theme-primary);
+    padding: 30px 40px;
+    border-radius: 0 15px 15px 0;
+    margin: 40px 0;
+    z-index: 1;
+}
+
+.custom-blockquote .quote-icon {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    font-size: 4rem;
+    color: var(--theme-primary);
+    opacity: 0.15;
+    z-index: -1;
+}
+
+.custom-blockquote p {
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* Tags Styling */
+.blog-tags a {
+    display: inline-block;
+    background-color: #f1f1f1;
+    color: var(--theme-dark);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    transition: var(--transition);
+}
+
+.blog-tags a:hover {
+    background-color: var(--theme-primary);
+    color: #fff;
+}
+
+/* Social Share Buttons */
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: #f1f1f1;
+    color: var(--theme-dark);
+    border-radius: 50%;
+    margin-left: 8px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.share-btn:hover.facebook {
+    background-color: #3b5998;
+    color: #fff;
+}
+
+.share-btn:hover.twitter {
+    background-color: #1da1f2;
+    color: #fff;
+}
+
+.share-btn:hover.linkedin {
+    background-color: #0077b5;
+    color: #fff;
+}
+
+.share-btn:hover.whatsapp {
+    background-color: #25d366;
+    color: #fff;
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Form Inputs customization */
+.custom-input {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: none !important;
+    transition: var(--transition);
+}
+
+.custom-input:focus {
+    background-color: #fff;
+    border-color: var(--theme-primary);
+}
+
+/* Recent Posts Sidebar Hover */
+.post-hover {
+    transition: var(--transition);
+}
+
+.post-hover:hover {
+    color: var(--theme-primary) !important;
+}
