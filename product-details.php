@@ -1,7 +1,43 @@
 <?php
+include("./admin/db-conn.php"); // Database connection
 include("./include/header.php");
+
+// URL se Product ID (pro_id) get karna
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Fetch Specific Product Data with Category Name using LEFT JOIN
+$sql = "SELECT p.*, c.categories AS category_name 
+        FROM products p 
+        LEFT JOIN categories c ON p.pro_cate = c.cate_id 
+        WHERE p.pro_id = $product_id AND p.status = 1 LIMIT 1";
+        
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    $product = $result->fetch_assoc();
+    
+    // Assigning variables securely
+    $pro_name = htmlspecialchars($product['pro_name']);
+    $mrp = htmlspecialchars($product['mrp']);
+    $selling_p = htmlspecialchars($product['selling_price']);
+    $sku = !empty($product['sku']) ? htmlspecialchars($product['sku']) : "N/A";
+    $category_name = !empty($product['category_name']) ? htmlspecialchars($product['category_name']) : "General";
+    
+    // Description formatting
+    $short_desc = !empty($product['short_desc']) ? html_entity_decode($product['short_desc']) : "";
+    $long_desc = !empty($product['description']) ? html_entity_decode($product['description']) : "No description available.";
+    
+    // Image Path Logic
+    $img_path = !empty($product['pro_img']) ? "admin/assets/img/uploads/" . htmlspecialchars($product['pro_img']) : "assets/images/product/p-1.png";
+    
+    $pageTitle = $pro_name; // Set dynamic breadcrumb title
+} else {
+    // Agar product URL galat ho ya exist na kare
+    echo "<script>window.location.href='products.php';</script>";
+    exit;
+}
+
 // Dynamic Breadcrumb Setup
-$pageTitle = "Product Details";
 include 'include/breadcrumb.php';
 ?>
 
@@ -17,9 +53,12 @@ include 'include/breadcrumb.php';
             <div class="col-lg-5 mb-4 mb-lg-0 animate-fade-up">
                 <div class="product-gallery">
                     <!-- Main Image -->
-                    <div class="main-image-box bg-light rounded-4 mb-3 overflow-hidden position-relative">
-                        <span class="product-badge bg-theme-primary text-white">In Stock</span>
-                        <img src="assets/images/product/p-1.png" alt="Fresh Russet Potatoes" class="img-fluid w-100 object-fit-cover" id="mainProductImage">
+                    <div class="main-image-box bg-light rounded-4 mb-3 overflow-hidden position-relative" style="height: 450px;">
+                        <?php if(isset($product['new_arrival']) && $product['new_arrival'] == 1): ?>
+                            <span class="product-badge bg-theme-primary text-white position-absolute m-3 z-3 px-3 py-1 rounded-pill">New Arrival</span>
+                        <?php endif; ?>
+                        
+                        <img src="<?= $img_path ?>" alt="<?= $pro_name ?>" class="img-fluid w-100 h-100 object-fit-cover" id="mainProductImage">
                     </div>
                 </div>
             </div>
@@ -34,39 +73,43 @@ include 'include/breadcrumb.php';
                         <span class="text-muted small">(15 Customer Reviews)</span>
                     </div>
 
-                    <h2 class="theme-title mb-3">Fresh Russet Potatoes</h2>
+                    <h2 class="theme-title mb-3"><?= $pro_name ?></h2>
 
                     <div class="price-box mb-4">
-                        <span class="fs-3 fw-bold text-theme-primary">$18.00</span>
-                        <span class="text-muted text-decoration-line-through ms-2">$25.00</span>
-                        <span class="fs-6 text-muted fw-normal ms-1">/ 5kg Box</span>
+                        <span class="fs-3 fw-bold text-theme-primary">₹<?= $selling_p ?></span>
+                        <?php if(!empty($mrp) && $mrp > $selling_p): ?>
+                            <span class="text-muted text-decoration-line-through ms-2">₹<?= $mrp ?></span>
+                        <?php endif; ?>
+                        <!-- If bulk qty is defined in DB -->
+                        <?php if(!empty($product['qty'])): ?>
+                            <span class="fs-6 text-muted fw-normal ms-1">/ <?= htmlspecialchars($product['qty']) ?></span>
+                        <?php endif; ?>
                     </div>
 
-                    <p class="text-muted mb-4 lead fs-6">Premium quality organic Russet potatoes, harvested straight from our farms. Known for their earthy flavor and high starch content, these are perfect for baking, mashing, and frying. Hand-sorted to ensure zero defects.</p>
+                    <!-- Short Description -->
+                    <div class="text-muted mb-4 lead fs-6">
+                        <?= $short_desc ?>
+                    </div>
 
                     <!-- Meta Data -->
                     <ul class="list-unstyled product-meta text-muted small mb-4 pb-4 border-bottom">
-                        <li class="mb-2"><strong class="text-dark">SKU:</strong> RD-POT-001</li>
-                        <li class="mb-2"><strong class="text-dark">Category:</strong> <a href="#" class="text-decoration-none theme-link">Fresh Potatoes</a>, <a href="#" class="text-decoration-none theme-link">Organic</a></li>
-                        <li><strong class="text-dark">Tags:</strong> <a href="#" class="text-decoration-none theme-link">Russet</a>, <a href="#" class="text-decoration-none theme-link">Baking</a>, <a href="#" class="text-decoration-none theme-link">Export</a></li>
+                        <li class="mb-2"><strong class="text-dark">SKU:</strong> <?= $sku ?></li>
+                        <li class="mb-2"><strong class="text-dark">Category:</strong> <a href="#" class="text-decoration-none theme-link"><?= $category_name ?></a></li>
                     </ul>
 
                     <!-- Action Buttons -->
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <!-- Custom Quantity Input -->
-                        <div class="quantity-selector d-flex align-items-center rounded-pill bg-light">
-                            <button type="button" class="qty-btn minus-btn"><i class="bi bi-dash"></i></button>
-                            <input type="number" class="qty-input bg-transparent border-0 text-center fw-bold" value="1" min="1" max="100">
-                            <button type="button" class="qty-btn plus-btn"><i class="bi bi-plus"></i></button>
+                        <div class="quantity-selector d-flex align-items-center rounded-pill bg-light border p-1">
+                            <button type="button" class="qty-btn minus-btn bg-transparent border-0 px-2"><i class="bi bi-dash"></i></button>
+                            <input type="number" class="qty-input bg-transparent border-0 text-center fw-bold w-50" value="1" min="1" max="100">
+                            <button type="button" class="qty-btn plus-btn bg-transparent border-0 px-2"><i class="bi bi-plus"></i></button>
                         </div>
 
-                        <button class="btn btn-theme-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2">
-                            <i class="bi bi-cart-plus"></i> Add to Cart
-                        </button>
-
-                        <button class="btn btn-outline-dark rounded-pill px-4 py-2 d-flex align-items-center gap-2">
+                        <!-- Inquiry Button (Dynamically passes product name) -->
+                        <a href="contact.php?product=<?= urlencode($pro_name) ?>" class="btn btn-theme-primary rounded-pill px-4 py-2 d-flex align-items-center gap-2">
                             <i class="bi bi-envelope"></i> Request Quote
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -82,78 +125,14 @@ include 'include/breadcrumb.php';
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active fw-bold px-0 me-4" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab">Description</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link fw-bold px-0 me-4" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">Additional Info</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link fw-bold px-0" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews (3)</button>
-                        </li>
                     </ul>
 
                     <div class="tab-content text-muted" id="productTabsContent">
                         <!-- Description Tab -->
                         <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                            <p>At Rudra International, our Russet potatoes are carefully cultivated in nutrient-rich soil without the use of harmful pesticides. After harvesting, they undergo a rigorous sorting process. Only the potatoes with the perfect shape, size, and skin texture make it to our export and premium retail batches.</p>
-                            <p>These potatoes have a dry, mealy texture which makes them incredibly light and fluffy when baked or mashed. They also crisp up beautifully when fried, making them the ultimate choice for restaurants and home cooks alike.</p>
-                        </div>
-
-                        <!-- Additional Info Tab -->
-                        <div class="tab-pane fade" id="info" role="tabpanel">
-                            <table class="table table-bordered custom-table mt-3">
-                                <tbody>
-                                    <tr>
-                                        <th class="bg-light w-25">Weight</th>
-                                        <td>5kg, 10kg, 25kg bags available</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-light">Packaging</th>
-                                        <td>Jute Bags, Mesh Nets, Corrugated Boxes</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-light">Shelf Life</th>
-                                        <td>3-4 weeks (in cool, dark conditions)</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="bg-light">Origin</th>
-                                        <td>India (Certified Organic Farms)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Reviews Tab -->
-                        <div class="tab-pane fade" id="reviews" role="tabpanel">
-                            <div class="review-list mb-4">
-                                <!-- Review Item -->
-                                <div class="d-flex mb-4 border-bottom pb-3">
-                                    <div class="me-3">
-                                        <div class="avatar-circle bg-theme-primary text-white d-flex align-items-center justify-content-center fw-bold fs-5 rounded-circle" style="width: 50px; height: 50px;">JD</div>
-                                    </div>
-                                    <div>
-                                        <div class="d-flex align-items-center mb-1">
-                                            <h6 class="mb-0 me-2 text-dark">John Doe</h6>
-                                            <div class="text-warning small"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
-                                        </div>
-                                        <span class="small text-muted d-block mb-2">August 12, 2023</span>
-                                        <p class="mb-0">Excellent quality! The potatoes arrived in perfect condition, no sprouts or green spots. Highly recommended for bulk buyers.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add Review Form -->
-                            <div class="bg-light p-4 rounded-4 mt-4">
-                                <h5 class="fw-bold mb-3">Add a Review</h5>
-                                <p class="small text-muted mb-3">Your email address will not be published.</p>
-                                <form>
-                                    <div class="mb-3 d-flex align-items-center">
-                                        <label class="me-3 mb-0">Your Rating:</label>
-                                        <div class="text-warning cursor-pointer"><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <textarea class="form-control shadow-none rounded-3" rows="3" placeholder="Your review..."></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-theme-primary rounded-pill px-4">Submit Review</button>
-                                </form>
+                            <!-- Dynamic Long Description Rendered Here -->
+                            <div class="blog-rich-text">
+                                <?= $long_desc ?>
                             </div>
                         </div>
                     </div>
@@ -172,53 +151,75 @@ include 'include/breadcrumb.php';
         <h3 class="theme-title text-center mb-5 animate-fade-up">Related Products</h3>
 
         <div class="row g-4">
-            <!-- Related Product 1 -->
-            <div class="col-md-6 col-lg-3 animate-fade-up delay-1">
-                <div class="product-card bg-white rounded-4 shadow-sm overflow-hidden h-100">
-                    <div class="product-img-box position-relative">
-                        <img src="assets/images/product/p-3.png" alt="Red Potato" class="img-fluid w-100 object-fit-cover">
-                        <div class="product-actions">
-                            <a href="#" class="action-btn" data-bs-toggle="tooltip" title="Quick View"><i class="bi bi-eye"></i></a>
-                            <a href="#" class="action-btn cart-btn" data-bs-toggle="tooltip" title="Add to Cart"><i class="bi bi-cart-plus"></i></a>
+            <?php
+            // Fetch 4 related products from the same category or random
+            $sql_related = "SELECT * FROM products WHERE status = 1 AND pro_id != $product_id ORDER BY id DESC LIMIT 4";
+            $result_related = $conn->query($sql_related);
+            
+            if ($result_related && $result_related->num_rows > 0) {
+                $delay = 1;
+                while ($rel_row = $result_related->fetch_assoc()) {
+                    $rel_id = htmlspecialchars($rel_row['pro_id']);
+                    $rel_name = htmlspecialchars($rel_row['pro_name']);
+                    $rel_price = htmlspecialchars($rel_row['selling_price']);
+                    $rel_img = !empty($rel_row['pro_img']) ? "admin/assets/img/uploads/" . htmlspecialchars($rel_row['pro_img']) : "assets/images/product/p-3.png";
+            ?>
+            <!-- Dynamic Related Product -->
+            <div class="col-md-6 col-lg-3 animate-fade-up delay-<?= $delay ?>">
+                <div class="product-card bg-white rounded-4 shadow-sm overflow-hidden h-100 d-flex flex-column">
+                    <div class="product-img-box custom-img-wrapper position-relative">
+                        <img src="<?= $rel_img ?>" alt="<?= $rel_name ?>" class="img-fluid w-100 h-100 object-fit-cover">
+                        
+                        <!-- Updated B2B Hover Actions -->
+                        <div class="product-actions d-flex position-absolute w-100 justify-content-center">
+                            <a href="product-details.php?id=<?= $rel_id ?>" class="action-btn" data-bs-toggle="tooltip" title="View Details">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="contact.php?product=<?= urlencode($rel_name) ?>" class="action-btn quote-btn" data-bs-toggle="tooltip" title="Request Quote">
+                                <i class="bi bi-envelope-paper"></i>
+                            </a>
                         </div>
                     </div>
-                    <div class="product-info p-3 text-center">
-                        <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none product-title">Premium Red Potatoes</a></h6>
-                        <span class="fw-bold text-theme-primary">$22.00</span>
+                    <div class="product-info p-3 text-center mt-auto">
+                        <h6 class="mb-1"><a href="product-details.php?id=<?= $rel_id ?>" class="text-dark text-decoration-none product-title"><?= $rel_name ?></a></h6>
+                        <span class="fw-bold text-theme-primary">₹<?= $rel_price ?></span>
                     </div>
                 </div>
             </div>
-            <!-- Add 3 more similar columns here for a full 4-column row -->
+            <?php 
+                    $delay++;
+                }
+            } else {
+                echo "<div class='col-12 text-center text-muted'>No related products found.</div>";
+            }
+            ?>
         </div>
     </div>
 </section>
 
-<!-- Simple Script for Image Gallery & Quantity -->
+<!-- Simple Script for Quantity -->
 <script>
-    // Gallery Image Changer
-    function changeImage(imageSrc, thumbElement) {
-        document.getElementById('mainProductImage').src = imageSrc;
-        // Remove active class from all
-        let thumbs = document.querySelectorAll('.thumbnail-box');
-        thumbs.forEach(thumb => thumb.classList.remove('active-thumb'));
-        // Add active class to clicked
-        thumbElement.classList.add('active-thumb');
-    }
-
-    // Quantity Selector logic (Requires clicking +/-)
     document.addEventListener("DOMContentLoaded", function() {
+        // Tooltip Initialization
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        // Quantity Logic
         const minusBtn = document.querySelector('.minus-btn');
         const plusBtn = document.querySelector('.plus-btn');
         const qtyInput = document.querySelector('.qty-input');
 
-        minusBtn.addEventListener('click', () => {
-            if (qtyInput.value > 1) qtyInput.value--;
-        });
-        plusBtn.addEventListener('click', () => {
-            qtyInput.value++;
-        });
+        if(minusBtn && plusBtn && qtyInput) {
+            minusBtn.addEventListener('click', () => {
+                if (qtyInput.value > 1) qtyInput.value--;
+            });
+            plusBtn.addEventListener('click', () => {
+                qtyInput.value++;
+            });
+        }
     });
 </script>
-
 
 <?php include("./include/footer.php"); ?>

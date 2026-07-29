@@ -1,0 +1,5 @@
+vendor
+.env
+admin/.htaccess
+admin/assets/vendors
+admin/assets/New folder

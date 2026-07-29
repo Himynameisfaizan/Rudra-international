@@ -1,11 +1,16 @@
 <?php 
-$pageTitle = "Our Services"; 
+include ("./admin/db-conn.php"); // Database Connection add kiya
+$pageTitle = "Our Blogs"; // Updated title
 include ("./include/header.php"); 
 include 'include/breadcrumb.php'; 
+
+// Fetch Published Blogs from Database
+$sql_blogs = "SELECT * FROM blogs WHERE status = 'published' ORDER BY created_at DESC";
+$result_blogs = $conn->query($sql_blogs);
 ?>
 
 <!-- =======================
-     Services Grid Section
+     Blog Grid Section
 ======================== -->
 <section class="blog-section py-5 bg-theme-soft">
     <div class="container py-lg-4">
@@ -16,82 +21,85 @@ include 'include/breadcrumb.php';
             ======================== -->
             <div class="col-lg-8">
                 
-                <!-- Blog Post 1 -->
-                <div class="blog-list-card bg-white rounded-4 shadow-sm mb-4 animate-fade-up">
-                    <div class="row g-0 align-items-center">
+                <?php
+                if ($result_blogs && $result_blogs->num_rows > 0) {
+                    $delay = 0; // Animation delay ke liye
+                    
+                    while ($row = $result_blogs->fetch_assoc()) {
+                        $blog_id = $row['id'];
+                        $title = htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8');
+                        $author = !empty($row['author']) ? htmlspecialchars($row['author'], ENT_QUOTES, 'UTF-8') : "Admin";
+                        
+                        // Date formatting for the dynamic badge
+                        $date_day = date('d', strtotime($row['created_at']));
+                        $date_month = date('M', strtotime($row['created_at']));
+
+                        // Content cleaning & Trimming for Excerpt (Short description)
+                        $raw_content = html_entity_decode($row['content']);
+                        $clean_text = strip_tags($raw_content);
+                        $excerpt = mb_strlen($clean_text) > 140 ? mb_substr($clean_text, 0, 140) . "..." : $clean_text;
+
+                        // Image Path Logic
+                        $img_path = !empty($row['image']) ? "admin/assets/img/uploads/" . htmlspecialchars($row['image']) : "assets/images/product/p-1.png";
+                        
+                        // Set animation delay class
+                        $delay_class = $delay > 0 ? "delay-" . min($delay, 3) : "";
+                ?>
+                <!-- Dynamic Blog Post -->
+                <div class="blog-list-card bg-white rounded-4 shadow-sm mb-4 animate-fade-up <?= $delay_class ?>">
+                    <div class="row g-0 align-items-center h-100">
                         <!-- Blog Image -->
-                        <div class="col-md-5">
-                            <div class="blog-img-wrap rounded-start-4 overflow-hidden position-relative h-100">
-                                <img src="assets/images/product/p-1.png" alt="Organic Potatoes" class="img-fluid w-100 object-fit-cover">
+                        <div class="col-md-5 h-100">
+                            <div class="blog-img-wrap rounded-start-4 overflow-hidden position-relative h-100 min-vh-25">
+                                <img src="<?= $img_path ?>" alt="<?= $title ?>" class="img-fluid w-100 h-100 object-fit-cover" style="min-height: 250px;">
                                 <!-- Floating Date Badge -->
-                                <div class="blog-date-badge text-center">
-                                    <span class="day">15</span>
-                                    <span class="month">AUG</span>
+                                <div class="blog-date-badge text-center position-absolute m-3 z-3">
+                                    <span class="day fw-bold fs-4 d-block lh-1 text-white"><?= $date_day ?></span>
+                                    <span class="month small fw-semibold text-white"><?= $date_month ?></span>
                                 </div>
                             </div>
                         </div>
                         <!-- Blog Content -->
                         <div class="col-md-7">
                             <div class="blog-content p-4 p-lg-5">
-                                <!-- Meta Info (Admin, Category) -->
+                                <!-- Meta Info (Admin) -->
                                 <ul class="blog-meta list-unstyled d-flex flex-wrap mb-2 small text-muted">
-                                    <li class="me-3"><i class="bi bi-person text-theme-primary me-1"></i> By Admin</li>
-                                    <li><i class="bi bi-tag text-theme-primary me-1"></i> Organic Farming</li>
+                                    <li class="me-3"><i class="bi bi-person text-theme-primary me-1"></i> By <?= $author ?></li>
+                                    <!-- Tumhare DB me blog categories nahi thi, isliye tag static rakha hai ya hata sakte ho -->
+                                    <li><i class="bi bi-tag text-theme-primary me-1"></i> Article</li>
                                 </ul>
                                 
                                 <h3 class="blog-title h4 mb-3">
-                                    <a href="blog-details.php" class="text-dark text-decoration-none">5 Benefits of Choosing Organic Potatoes</a>
+                                    <a href="blog-details.php?id=<?= $blog_id ?>" class="text-dark text-decoration-none"><?= $title ?></a>
                                 </h3>
                                 
-                                <p class="text-muted mb-4">Discover how organically grown potatoes offer better nutritional value and why they are the right choice for your family's daily diet and long-term health...</p>
+                                <p class="text-muted mb-4"><?= $excerpt ?></p>
                                 
-                                <a href="blog-details.php" class="read-more-link fw-bold">
+                                <a href="blog-details.php?id=<?= $blog_id ?>" class="read-more-link fw-bold text-theme-primary text-decoration-none">
                                     Continue Reading <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
+                <?php 
+                        $delay++;
+                    } 
+                } else {
+                    echo "<div class='alert alert-info rounded-4'>No blogs found at the moment. Please check back later.</div>";
+                }
+                ?>
 
-                <!-- Blog Post 2 -->
-                <div class="blog-list-card bg-white rounded-4 shadow-sm mb-4 animate-fade-up delay-1">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-5">
-                            <div class="blog-img-wrap rounded-start-4 overflow-hidden position-relative h-100">
-                                <img src="assets/images/product/p-1.png" alt="Export Quality" class="img-fluid w-100 object-fit-cover">
-                                <div class="blog-date-badge text-center">
-                                    <span class="day">02</span>
-                                    <span class="month">SEP</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-7">
-                            <div class="blog-content p-4 p-lg-5">
-                                <ul class="blog-meta list-unstyled d-flex flex-wrap mb-2 small text-muted">
-                                    <li class="me-3"><i class="bi bi-person text-theme-primary me-1"></i> By Admin</li>
-                                    <li><i class="bi bi-tag text-theme-primary me-1"></i> Export & Trade</li>
-                                </ul>
-                                <h3 class="blog-title h4 mb-3">
-                                    <a href="blog-details.php" class="text-dark text-decoration-none">How We Ensure Export Quality Standards</a>
-                                </h3>
-                                <p class="text-muted mb-4">A deep dive into our quality control process, from manual sorting to automated grading, ensuring only the best produce reaches the global market...</p>
-                                <a href="blog-details.php" class="read-more-link fw-bold">
-                                    Continue Reading <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pagination -->
+                <!-- Pagination (Optional: Keep it static for layout or integrate actual pagination logic later) -->
+                <?php if ($result_blogs && $result_blogs->num_rows > 0): ?>
                 <nav aria-label="Page navigation" class="mt-5 animate-fade-up delay-2">
                     <ul class="pagination justify-content-center custom-pagination">
                         <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
                         <li class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
+                <?php endif; ?>
 
             </div>
 
@@ -111,13 +119,14 @@ include 'include/breadcrumb.php';
                     </div>
 
                     <!-- Categories Widget -->
+                    <!-- Note: Zenvyara.sql me Blog categories ka table nahi tha, isliye isko abhi static rakha hai -->
                     <div class="widget bg-white p-4 rounded-4 shadow-sm mb-4">
                         <h4 class="widget-title h5 mb-3 fw-bold">Categories</h4>
                         <ul class="list-unstyled mb-0 category-list">
-                            <li><a href="#">Organic Farming <span>(12)</span></a></li>
-                            <li><a href="#">Potato Varieties <span>(08)</span></a></li>
-                            <li><a href="#">Export & Trade <span>(15)</span></a></li>
-                            <li><a href="#">Healthy Recipes <span>(05)</span></a></li>
+                            <li><a href="#" class="text-decoration-none text-muted">Organic Farming <span>(12)</span></a></li>
+                            <li><a href="#" class="text-decoration-none text-muted">Potato Varieties <span>(08)</span></a></li>
+                            <li><a href="#" class="text-decoration-none text-muted">Export & Trade <span>(15)</span></a></li>
+                            <li><a href="#" class="text-decoration-none text-muted">Healthy Recipes <span>(05)</span></a></li>
                         </ul>
                     </div>
 
@@ -126,7 +135,6 @@ include 'include/breadcrumb.php';
 
         </div>
     </div>
-
-
+</section>
 
 <?php include ("./include/footer.php"); ?>

@@ -1,7 +1,39 @@
 <?php 
+include("./admin/db-conn.php"); 
 include 'include/header.php'; 
 
-$pageTitle = "Blog Details"; 
+// URL se Blog ID get karna securely
+$blog_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Fetch Current Blog Data
+$sql = "SELECT * FROM blogs WHERE id = $blog_id AND status = 'published' LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    $blog = $result->fetch_assoc();
+    
+    // Assigning variables
+    $title = html_entity_decode($blog['title'], ENT_QUOTES, 'UTF-8');
+    $author = !empty($blog['author']) ? htmlspecialchars($blog['author'], ENT_QUOTES, 'UTF-8') : "Admin";
+    
+    // Formatting date
+    $date_day = date('d', strtotime($blog['created_at']));
+    $date_month = date('M', strtotime($blog['created_at']));
+    
+    // Decoding HTML content saved via WYSIWYG editor
+    $content = html_entity_decode($blog['content']);
+    
+    // Image setup
+    $img_path = !empty($blog['image']) ? "admin/assets/img/uploads/" . htmlspecialchars($blog['image']) : "assets/images/product/p-1.png";
+    
+    // Dynamic Page Title for Breadcrumb
+    $pageTitle = $title;
+} else {
+    // Agar blog nahi milta ya link galat hai to blogs page pe bhej do
+    echo "<script>window.location.href='blogs.php';</script>";
+    exit;
+}
+
 include 'include/breadcrumb.php'; 
 ?>
 
@@ -18,57 +50,40 @@ include 'include/breadcrumb.php';
                 <article class="bg-white rounded-4 shadow-sm overflow-hidden mb-5">
                     <!-- Featured Image -->
                     <div class="position-relative">
-                        <img src="assets/images/product/p-1.png" alt="5 Benefits of Choosing Organic Potatoes" class="img-fluid w-100 object-fit-cover" style="max-height: 450px;">
-                        <div class="blog-date-badge text-center">
-                            <span class="day">15</span>
-                            <span class="month">AUG</span>
+                        <img src="<?= $img_path ?>" alt="<?= $title ?>" class="img-fluid w-100 object-fit-cover" style="max-height: 450px;">
+                        <div class="blog-date-badge text-center position-absolute m-3 z-3 bg-theme-primary text-white p-2 rounded shadow-sm" style="top:15px; left:15px; min-width:60px;">
+                            <span class="day d-block fs-4 fw-bold lh-1"><?= $date_day ?></span>
+                            <span class="month small fw-semibold text-uppercase"><?= $date_month ?></span>
                         </div>
                     </div>
 
                     <div class="p-4 p-lg-5">
                         <!-- Meta Info -->
                         <ul class="blog-meta list-unstyled d-flex flex-wrap mb-4 small text-muted border-bottom pb-3">
-                            <li class="me-4"><i class="bi bi-person text-theme-primary me-1"></i> By Admin</li>
-                            <li class="me-4"><i class="bi bi-tag text-theme-primary me-1"></i> Organic Farming</li>
-                            <li><i class="bi bi-chat-dots text-theme-primary me-1"></i> 3 Comments</li>
+                            <li class="me-4"><i class="bi bi-person text-theme-primary me-1"></i> By <?= $author ?></li>
+                            <li class="me-4"><i class="bi bi-tag text-theme-primary me-1"></i> Article</li>
                         </ul>
                         
                         <!-- Title -->
-                        <h2 class="theme-title mb-4">5 Benefits of Choosing Organic Potatoes</h2>
+                        <h2 class="theme-title mb-4"><?= $title ?></h2>
                         
-                        <!-- Content -->
+                        <!-- Dynamic Content from Database -->
                         <div class="blog-rich-text text-muted">
-                            <p>Discover how organically grown potatoes offer better nutritional value and why they are the right choice for your family's daily diet and long-term health. At Rudra International, we take pride in our sustainable farming methods.</p>
-                            
-                            <p>Organic farming ensures that no synthetic pesticides or fertilizers are used. This not only protects the environment but also keeps the soil rich and fertile for future generations. When you choose organic, you are making a conscious choice for a healthier lifestyle.</p>
-                            
-                            <!-- Custom Premium Blockquote -->
-                            <blockquote class="custom-blockquote my-4">
-                                <i class="bi bi-quote quote-icon"></i>
-                                <p class="mb-0 h5 fw-normal text-dark">"The true wealth of a nation lies in the health of its soil and the purity of its harvest. Organic farming is not just a method; it's a commitment to the future."</p>
-                            </blockquote>
-                            
-                            <h4 class="text-dark mt-5 mb-3">1. Better Nutritional Value</h4>
-                            <p>Studies have shown that organically grown crops, including potatoes, often contain higher levels of certain antioxidants and vitamins. Without the interference of chemical fertilizers, the plants develop their natural defenses, which translates to better nutrients for you.</p>
-
-                            <h4 class="text-dark mt-4 mb-3">2. Better Taste and Texture</h4>
-                            <p>Many chefs and home cooks swear by the superior taste and texture of organic potatoes. They tend to be denser, hold their shape better when cooked, and have an authentic, earthy flavor that elevates any dish.</p>
+                            <?= $content ?>
                         </div>
 
                         <!-- Article Footer (Tags & Share) -->
                         <div class="article-footer d-flex flex-wrap justify-content-between align-items-center mt-5 pt-4 border-top">
                             <div class="blog-tags mb-3 mb-md-0">
-                                <span class="fw-bold text-dark me-2">Tags:</span>
-                                <a href="#">Organic</a>
-                                <a href="#">Farming</a>
-                                <a href="#">Health</a>
+                                <span class="fw-bold text-dark me-2">Share this post:</span>
                             </div>
                             <div class="blog-share">
-                                <span class="fw-bold text-dark me-2">Share:</span>
-                                <a href="#" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
-                                <a href="#" class="share-btn twitter"><i class="bi bi-twitter"></i></a>
-                                <a href="#" class="share-btn linkedin"><i class="bi bi-linkedin"></i></a>
-                                <a href="#" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
+                                <!-- Dynamic Share Links -->
+                                <?php $current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($current_url) ?>" target="_blank" class="share-btn facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="https://twitter.com/intent/tweet?url=<?= urlencode($current_url) ?>&text=<?= urlencode($title) ?>" target="_blank" class="share-btn twitter"><i class="bi bi-twitter"></i></a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= urlencode($current_url) ?>" target="_blank" class="share-btn linkedin"><i class="bi bi-linkedin"></i></a>
+                                <a href="https://api.whatsapp.com/send?text=<?= urlencode($title . " " . $current_url) ?>" target="_blank" class="share-btn whatsapp"><i class="bi bi-whatsapp"></i></a>
                             </div>
                         </div>
                     </div>
@@ -102,7 +117,7 @@ include 'include/breadcrumb.php';
             </div>
 
             <!-- =======================
-                 Right Side: Sidebar (Same as blog.php)
+                 Right Side: Sidebar
             ======================== -->
             <div class="col-lg-4 mt-5 mt-lg-0 animate-fade-up delay-2">
                 <div class="blog-sidebar">
@@ -110,43 +125,83 @@ include 'include/breadcrumb.php';
                     <!-- Search Widget -->
                     <div class="widget bg-white p-4 rounded-4 shadow-sm mb-4">
                         <h4 class="widget-title h5 mb-3 fw-bold">Search</h4>
-                        <div class="input-group">
-                            <input type="text" class="form-control custom-input rounded-start-pill shadow-none" placeholder="Search...">
-                            <button class="btn btn-theme-primary rounded-end-pill px-3" type="button"><i class="bi bi-search"></i></button>
-                        </div>
+                        <form action="blogs.php" method="GET">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control custom-input rounded-start-pill shadow-none" placeholder="Search...">
+                                <button type="submit" class="btn btn-theme-primary rounded-end-pill px-3"><i class="bi bi-search"></i></button>
+                            </div>
+                        </form>
                     </div>
 
-                    <!-- Recent Posts Widget -->
+                    <!-- Dynamic Recent Posts Widget -->
                     <div class="widget bg-white p-4 rounded-4 shadow-sm mb-4">
                         <h4 class="widget-title h5 mb-4 fw-bold">Recent Posts</h4>
                         
-                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
-                            <img src="assets/images/product/p-3.png" alt="Post" class="rounded-3 me-3 object-fit-cover" width="70" height="70">
-                            <div>
-                                <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none post-hover">How We Ensure Export Quality</a></h6>
-                                <span class="small text-muted"><i class="bi bi-calendar3 me-1"></i> 02 Sep, 2023</span>
-                            </div>
-                        </div>
+                        <?php
+                        // Fetch latest 4 blogs excluding the current one
+                        $sql_recent = "SELECT id, title, image, created_at FROM blogs WHERE status = 'published' AND id != $blog_id ORDER BY created_at DESC LIMIT 4";
+                        $result_recent = $conn->query($sql_recent);
                         
-                        <div class="d-flex align-items-center">
-                            <img src="assets/images/product/p-4.png" alt="Post" class="rounded-3 me-3 object-fit-cover" width="70" height="70">
+                        if ($result_recent && $result_recent->num_rows > 0) {
+                            while ($recent = $result_recent->fetch_assoc()) {
+                                $rec_id = $recent['id'];
+                                $rec_title = htmlspecialchars($recent['title'], ENT_QUOTES, 'UTF-8');
+                                $rec_date = date('d M, Y', strtotime($recent['created_at']));
+                                $rec_img = !empty($recent['image']) ? "admin/assets/img/uploads/" . htmlspecialchars($recent['image']) : "assets/images/product/p-3.png";
+                        ?>
+                        <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                            <img src="<?= $rec_img ?>" alt="<?= $rec_title ?>" class="rounded-3 me-3 object-fit-cover" width="70" height="70">
                             <div>
-                                <h6 class="mb-1"><a href="#" class="text-dark text-decoration-none post-hover">Tips for Storing Potatoes</a></h6>
-                                <span class="small text-muted"><i class="bi bi-calendar3 me-1"></i> 28 Aug, 2023</span>
+                                <h6 class="mb-1">
+                                    <a href="blog-details.php?id=<?= $rec_id ?>" class="text-dark text-decoration-none post-hover">
+                                        <?= mb_strlen($rec_title) > 40 ? mb_substr($rec_title, 0, 40) . "..." : $rec_title ?>
+                                    </a>
+                                </h6>
+                                <span class="small text-muted"><i class="bi bi-calendar3 me-1"></i> <?= $rec_date ?></span>
                             </div>
                         </div>
+                        <?php 
+                            }
+                        } else {
+                            echo "<p class='text-muted small'>No recent posts available.</p>";
+                        }
+                        ?>
                     </div>
 
-                    <!-- Categories Widget -->
-                    <div class="widget bg-white p-4 rounded-4 shadow-sm">
-                        <h4 class="widget-title h5 mb-3 fw-bold">Categories</h4>
-                        <ul class="list-unstyled mb-0 category-list">
-                            <li><a href="#">Organic Farming <span>(12)</span></a></li>
-                            <li><a href="#">Potato Varieties <span>(08)</span></a></li>
-                            <li><a href="#">Export & Trade <span>(15)</span></a></li>
-                            <li><a href="#">Healthy Recipes <span>(05)</span></a></li>
-                        </ul>
-                    </div>
+                    <!-- Categories Widget (Static for now as DB doesn't have blog categories) -->
+                  <!-- Categories Widget -->
+<div class="widget bg-white p-4 rounded-4 shadow-sm">
+    <h4 class="widget-title h5 mb-3 fw-bold">Categories</h4>
+    <ul class="list-unstyled mb-0 category-list">
+        <?php
+        // Fetch active categories and count items inside them dynamically
+        $cat_sql = "SELECT c.cate_id, c.categories, 
+                           (SELECT COUNT(*) FROM products p WHERE p.pro_cate = c.cate_id AND p.status = 1) as total_items 
+                    FROM categories c 
+                    WHERE c.status = 1";
+        $cat_result = $conn->query($cat_sql);
+
+        if ($cat_result && $cat_result->num_rows > 0) {
+            while ($category = $cat_result->fetch_assoc()) {
+                $cat_name = htmlspecialchars($category['categories']); // Category ka naam
+                $cat_count = $category['total_items']; // Dynamic count
+                
+                // Link ko aap blog ya product page par redirect karwa sakte hain
+                $cat_link = "products.php?category=" . htmlspecialchars($category['cate_id']); 
+        ?>
+        <li>
+            <a href="<?= $cat_link ?>" class="text-decoration-none text-muted d-flex justify-content-between align-items-center">
+                <?= $cat_name ?> <span>(<?= sprintf("%02d", $cat_count) ?>)</span>
+            </a>
+        </li>
+        <?php 
+            }
+        } else {
+            echo "<li><span class='text-muted small'>No categories found.</span></li>";
+        }
+        ?>
+    </ul>
+</div>
 
                 </div>
             </div>
