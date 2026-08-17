@@ -76,10 +76,10 @@ include 'include/breadcrumb.php';
                     <h2 class="theme-title mb-3"><?= $pro_name ?></h2>
 
                     <div class="price-box mb-4">
-                        <span class="fs-3 fw-bold text-theme-primary">₹<?= $selling_p ?></span>
-                        <?php if(!empty($mrp) && $mrp > $selling_p): ?>
+                        <!-- <span class="fs-3 fw-bold text-theme-primary">₹<?= $selling_p ?></span> -->
+                        <!-- <?php if(!empty($mrp) && $mrp > $selling_p): ?>
                             <span class="text-muted text-decoration-line-through ms-2">₹<?= $mrp ?></span>
-                        <?php endif; ?>
+                        <?php endif; ?> -->
                         <!-- If bulk qty is defined in DB -->
                         <?php if(!empty($product['qty'])): ?>
                             <span class="fs-6 text-muted fw-normal ms-1">/ <?= htmlspecialchars($product['qty']) ?></span>
@@ -182,7 +182,7 @@ include 'include/breadcrumb.php';
                     </div>
                     <div class="product-info p-3 text-center mt-auto">
                         <h6 class="mb-1"><a href="product-details.php?id=<?= $rel_id ?>" class="text-dark text-decoration-none product-title"><?= $rel_name ?></a></h6>
-                        <span class="fw-bold text-theme-primary">₹<?= $rel_price ?></span>
+                        <!-- <span class="fw-bold text-theme-primary">₹<?= $rel_price ?></span> -->
                     </div>
                 </div>
             </div>

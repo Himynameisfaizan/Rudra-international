@@ -8,7 +8,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Rudra International</title>
+    <title>Rudrdev Exim</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="Premium Organic Potatoes Export">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,8 +48,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <div class="row">
                         <div class="col-12 col-custom header-top-wrapper text-center">
                             <div class="short-desc">
-                                <p>Support Center: <strong><a href="tel:+919687613713" title="tel:+919687613713">+91 9687613713 </a></strong></p>
-                                <p> Email: <a href="mailto:info@rudrainternational.com" title="mailto:info@rudrainternational.com">info@rudrainternational.com</a></p>
+                                <p>Support Center: <strong><a href="tel:+919898384868" title="tel:+919898384868">+91 9898384868 </a></strong></p>
+                                <p> Email: <a href="mailto:rudradevexim03@gmail.com" title="mailto:rudradevexim03@gmail.com">rudradevexim03@gmail.com</a></p>
                             </div>
                             <span class="top-close-button">X</span>
                         </div>
@@ -79,8 +79,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                             <li><a class="<?= ($currentPage == 'index.php') ? 'active' : '' ?>" href="index.php"><span class="menu-text">Home</span></a></li>
                                             <li><a class="<?= ($currentPage == 'about.php') ? 'active' : '' ?>" href="about.php"><span class="menu-text">About</span></a></li>
                                             <li><a class="<?= ($currentPage == 'services.php') ? 'active' : '' ?>" href="services.php"><span class="menu-text">Services</span></a></li>
-                                            <li><a class="<?= ($currentPage == 'products.php' || $currentPage == 'product-details.php') ? 'active' : '' ?>" href="products.php"><span class="menu-text">Products</span> <i class="fa fa-angle-down"></i></a></li>
-                                            <li><a class="<?= ($currentPage == 'blogs.php' || $currentPage == 'blog-details.php') ? 'active' : '' ?>" href="blogs.php"><span class="menu-text">Blogs</span> <i class="fa fa-angle-down"></i></a></li>
+                                            <li><a class="<?= ($currentPage == 'products.php' || $currentPage == 'product-details.php') ? 'active' : '' ?>" href="products.php"><span class="menu-text">Products</span> </a></li>
+                                            <li><a class="<?= ($currentPage == 'blogs.php' || $currentPage == 'blog-details.php') ? 'active' : '' ?>" href="blogs.php"><span class="menu-text">Blogs</span> </a></li>
                                             <li><a class="<?= ($currentPage == 'contact.php') ? 'active' : '' ?>" href="contact.php"><span class="menu-text">Contact</span></a></li>
                                         </ul>
                                     </nav>

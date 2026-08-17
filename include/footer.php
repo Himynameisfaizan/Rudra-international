@@ -10,7 +10,7 @@
                                         <img src="assets/images/logo/footer.png" alt="Logo Image">
                                     </a>
                                 </div>
-                                <p class="desc-content">Rudra international is the best parts shop of your daily nutritions. What kind of nutrition do you need you can get here soluta nobis</p>
+                                <p class="desc-content">Rudrdev Eximis the best parts shop of your daily nutritions. What kind of nutrition do you need you can get here soluta nobis</p>
                                 <div class="social-links">
                                     <ul class="d-flex">
                                         <li>
@@ -46,11 +46,9 @@
                             <div class="single-footer-widget">
                                 <h2 class="widget-title">Information</h2>
                                 <ul class="widget-list">
-                                    <li><a href="#">Our Company</a></li>
-                                    <li><a href="#">Contact Us</a></li>
-                                    <li><a href="#">Our Services</a></li>
-                                    <li><a href="#">Why We?</a></li>
-                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="about.php">Our Company</a></li>
+                                    <li><a href="contact.php">Contact Us</a></li>
+                                    <li><a href="services.php">Our Services</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -58,11 +56,10 @@
                             <div class="single-footer-widget">
                                 <h2 class="widget-title">Quicklink</h2>
                                 <ul class="widget-list">
-                                    <li><a href="#">About</a></li>
-                                    <li><a href="#">Blog</a></li>
-                                    <li><a href="#">Shop</a></li>
-                                    <li><a href="#">Cart</a></li>
-                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="about.php">About</a></li>
+                                    <li><a href="blog.php">Blog</a></li>
+                                    <li><a href="services.php">Shop</a></li>
+                                    <li><a href="contact.php">Contact</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -82,7 +79,9 @@
                             <div class="single-footer-widget">
                                 <h2 class="widget-title">See Information</h2>
                                 <div class="widget-body">
-                                    <address>123, H2, Road #21, Main City, Your address goes here.<br>Phone: 01254 698 785, 36598 254 987<br>Email: https://example.com</address>
+                                    <address>Ground Floor, Shop 
+No G-5, Vishal Chambers, Old Vegetable Market Road, Dhrangadhra- 
+363310, Dist: Surendranagar, Gujarat</address>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +93,7 @@
                     <div class="row">
                         <div class="col-12 text-center col-custom">
                             <div class="copyright-content">
-                                <p>Copyright © 2020 <a href="#" title="rudrainternational">Manas Crest International</a> | Built by <a href="https://digitalwebtrackers.com/" title="https://digitalwebtrackers.com/">Digital Web Tracker</a>.</p>
+                                <p>Copyright © 2025 <a href="#" title="Rudrdevexim">Rudrdev Exim</a> | Built by <a href="https://digitalwebtrackers.com/" title="https://digitalwebtrackers.com/">Digital Web Tracker</a>.</p>
                             </div>
                         </div>
                     </div>

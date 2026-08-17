@@ -390,13 +390,12 @@ $resultBlog = $conn->query($sqlBlog);
                                                 <a href="product-details.php?id=<?= $pro_id ?>" class="text-dark text-decoration-none"><?php echo $pro_name ?></a>
                                             </h4>
                                         </div>
-                                        <div class="price-box">
+                                        <!-- <div class="price-box">
                                             <span class="regular-price fs-5 fw-bold text-theme-primary">₹<?= $selling_p ?></span>
-                                            <!-- Condition lagai hai taki agar MRP nahi hai ya selling price se kam hai to cut price na dikhaye -->
-                                            <?php if (!empty($mrp) && $mrp > $selling_p): ?>
+                                             <?php if (!empty($mrp) && $mrp > $selling_p): ?>
                                                 <span class="old-price text-muted ms-2"><del>₹<?php echo $mrp ?></del></span>
                                             <?php endif; ?>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -566,13 +565,12 @@ $resultBlog = $conn->query($sqlBlog);
                                             </h4>
                                         </div>
                                         <!-- Fixed Hardcoded Prices -->
-                                        <div class="price-box">
+                                        <!-- <div class="price-box">
                                             <span class="regular-price fs-5 fw-bold text-theme-primary">₹<?= $selling_p ?></span>
-                                            <!-- MRP condition: agar MRP zyada hai tabhi cut (del) price dikhega -->
-                                            <?php if (!empty($mrp) && $mrp > $selling_p): ?>
+                                             <?php if (!empty($mrp) && $mrp > $selling_p): ?>
                                                 <span class="old-price text-muted ms-2"><del>₹<?php echo $mrp ?></del></span>
                                             <?php endif; ?>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                 </div>

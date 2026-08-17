@@ -134,14 +134,13 @@ $result_prods = $conn->query($sql_prods);
                                 <h5 class="mb-2">
                                     <a href="product-details.php?id=<?= $pro_id ?>" class="text-dark text-decoration-none product-title fs-5 fw-bold"><?= $pro_name ?></a>
                                 </h5>
-                                <div class="product-price">
+                                <!-- <div class="product-price">
                                     <span class="fs-5 fw-bold text-theme-primary">₹<?= $selling_p ?></span>
                                     
-                                    <!-- Conditional MRP Display -->
                                     <?php if(!empty($mrp) && $mrp > $selling_p): ?>
                                         <span class="text-muted text-decoration-line-through ms-2 small">₹<?= $mrp ?></span>
                                     <?php endif; ?>
-                                </div>
+                                </div> -->
                             </div>
                             
                         </div>

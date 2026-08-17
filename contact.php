@@ -21,7 +21,9 @@ include 'include/breadcrumb.php';
                         <i class="bi bi-geo-alt"></i>
                     </div>
                     <h4 class="fw-bold mb-3">Our Location</h4>
-                    <p class="text-muted mb-0">123 Organic Farm Road,<br>Agri-Business Park,<br>New Delhi, India - 110001</p>
+                    <p class="text-muted mb-0"> Ground Floor, Shop 
+No G-5, Vishal Chambers, Old Vegetable Market Road, Dhrangadhra- 
+363310, Dist: Surendranagar, Gujarat</p>
                 </div>
             </div>
             
@@ -33,8 +35,7 @@ include 'include/breadcrumb.php';
                     </div>
                     <h4 class="fw-bold mb-3">Call Us Directly</h4>
                     <p class="text-muted mb-2">For Sales & Export Inquiries:</p>
-                    <a href="tel:+919876543210" class="fs-5 fw-bold text-theme-primary text-decoration-none">+91 98765 43210</a><br>
-                    <a href="tel:+911123456789" class="text-muted text-decoration-none">+91 11 2345 6789</a>
+                    <a href="tel:+919898384868" class="fs-5 fw-bold text-theme-primary text-decoration-none">+91 98983 84868</a><br>
                 </div>
             </div>
             
@@ -46,8 +47,7 @@ include 'include/breadcrumb.php';
                     </div>
                     <h4 class="fw-bold mb-3">Email Us</h4>
                     <p class="text-muted mb-2">We typically reply within 24 hours.</p>
-                    <a href="mailto:info@rudrainternational.com" class="fs-6 fw-bold text-theme-primary text-decoration-none d-block mb-1">info@rudrainternational.com</a>
-                    <a href="mailto:sales@rudrainternational.com" class="text-muted text-decoration-none">sales@rudrainternational.com</a>
+                    <a href="mailto:rudradevexim03@gmail.com" class="fs-6 fw-bold text-theme-primary text-decoration-none d-block mb-1">rudradevexim03@gmail.com</a>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@ include 'include/breadcrumb.php';
                 <div class="map-wrapper h-100 min-vh-50">
                     <!-- Replace the src URL with your client's actual Google Maps Embed URL -->
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923192776!2d77.06889754725782!3d28.52758200617607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x52c2b7494e204dce!2sNew%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1693043000000!5m2!1sen!2sin" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7345.859948198224!2d71.45409107208256!3d22.989602375522953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395963619ae7fa11%3A0x42c6be8ac0d9a74e!2sSBI%20Branch%20Old%20Veg%20Mkt%20Rd%20Dhragadhra!5e0!3m2!1sen!2sin!4v1786946171137!5m2!1sen!2sin" 
                         width="100%" 
                         height="100%" 
                         style="border:0; min-height: 500px;" 
@@ -106,7 +106,6 @@ include 'include/breadcrumb.php';
                     </iframe>
                 </div>
             </div>
-
         </div>
 
     </div>
